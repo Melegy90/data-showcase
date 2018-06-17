@@ -1,0 +1,273 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Floating Draggable Popup Menu Demo</title>
+<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>
+body {
+  background-color: #222222;
+  color: white;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 12px;
+}
+
+h2 {
+  position: absolute;
+  left: 20px;
+  top: 0px;
+  z-index: -1;
+}
+
+.center {
+  position: absolute;
+  margin: auto;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+
+.menu {
+  width: 40px;
+  height: 40px;
+}
+
+.title {
+  width: 300px;
+  height: 10px;
+  top: 60px;
+}
+
+.item {
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  width: 40px;
+  height: 40px;
+  background-color: white;
+  -moz-border-radius: 50%;
+  -webkit-border-radius: 50%;
+  border-radius: 50%;
+  cursor: pointer;
+  text-align: center;
+  line-height: 40px;
+}
+
+i {
+  font-size: 24px;
+  color: #222222;
+}
+</style>
+</head>
+
+<body>
+<h1 style="margin:30px auto; text-align:center;">Floating Draggable Popup Menu Demo</h1>
+<div class="jquery-script-ads" align="center"><script type="text/javascript"><!--
+google_ad_client = "ca-pub-2783044520727903";
+/* jQuery_demo */
+google_ad_slot = "2780937993";
+google_ad_width = 728;
+google_ad_height = 90;
+//-->
+</script>
+<script type="text/javascript"
+src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+</script></div>
+<div class="center menu">
+  <div id="myMenu"></div>
+</div>
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script> 
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script> 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/1.1.3/anime.min.js"></script> 
+<script>
+var timeOut;
+
+class Item {
+    constructor(icon, backgroundColor) {
+        this.$element = $(document.createElement("div"));
+        this.icon = icon;
+        this.$element.addClass("item");
+        this.$element.css("background-color", backgroundColor);
+        var i = document.createElement("i");
+        $(i).addClass("fa " + icon);
+        this.$element.append(i);
+        this.prev = null;
+        this.next = null;
+        this.isMoving = false;
+        var element = this;
+        this.$element.on("mousemove", function() {
+            clearTimeout(timeOut);
+            timeOut = setTimeout(function() {
+                if (element.next && element.isMoving) {
+                    element.next.moveTo(element);
+                } 
+            }, 10);
+        });
+    }
+    
+    moveTo(item) {
+        anime({
+            targets: this.$element[0],
+            left: item.$element.css("left"),
+            top: item.$element.css("top"),
+            duration: 700,
+            elasticity: 500
+        });
+        if (this.next) {
+            this.next.moveTo(item);
+        }
+    }
+
+    updatePosition() {    
+        anime({
+            targets: this.$element[0],
+            left: this.prev.$element.css("left"),
+            top: this.prev.$element.css("top"),
+            duration: 200
+        });
+        
+        if (this.next) {
+            this.next.updatePosition();
+        }
+    }
+}
+
+class Menu {
+    constructor(menu) {
+        this.$element = $(menu);
+        this.size = 0;
+        this.first = null;
+        this.last = null;
+        this.timeOut = null;
+        this.hasMoved = false;
+        this.status = "closed";
+    }
+    
+    add(item) {
+        var menu = this;
+        if (this.first == null) {
+            this.first = item;
+            this.last = item;
+            this.first.$element.on("mouseup", function() {
+                if (menu.first.isMoving) {
+                    menu.first.isMoving = false;        
+                } else {
+                    menu.click();
+                }
+            }); 
+            item.$element.draggable(
+                {
+                    start: function() {
+                        menu.close();
+                        item.isMoving = true;
+                    }  
+                },
+                {
+                    drag: function() {
+                        if (item.next) {
+                            item.next.updatePosition();
+                        }
+                    }
+                },
+                {
+                    stop: function() {
+                        item.isMoving = false;
+                        item.next.moveTo(item);
+                    }
+                }
+            );
+        } else {
+            this.last.next = item;
+            item.prev = this.last;
+            this.last = item;
+        }
+        this.$element.after(item.$element);
+        
+        
+    }
+    
+    open() {
+        this.status = "open";
+        var current = this.first.next;
+        var iterator = 1;
+        var head = this.first;
+        var sens = head.$element.css("left") < head.$element.css("right") ? 1 : -1;
+        while (current != null) {
+            anime({
+                targets: current.$element[0],
+                left: parseInt(head.$element.css("left"), 10) + (sens * (iterator * 50)),
+                top: head.$element.css("top"),
+                duration: 500
+            });
+            iterator++;
+            current = current.next;
+        }    
+    }
+    
+    close() {
+        this.status = "closed";
+        var current = this.first.next;
+        var head = this.first;
+        var iterator = 1;
+        while (current != null) {
+            anime({
+                targets: current.$element[0],
+                left: head.$element.css("left"),
+                top: head.$element.css("top"),
+                duration: 500
+            });
+            iterator++;
+            current = current.next;
+        }
+    }
+    
+    click() {
+        if (this.status == "closed") {
+            this.open();
+        } else {
+            this.close();
+        }
+    }
+    
+}
+
+var menu = new Menu("#myMenu");
+var item1 = new Item("fa-bars");
+var item2 = new Item("fa-twitter", "#55acee");
+var item3 = new Item("fa-facebook", "#3b5999");
+var item4 = new Item("fa-google-plus", "#dd4b39");
+var item5 = new Item("fa-pinterest", "#bd081c");
+
+menu.add(item1);
+menu.add(item2);
+menu.add(item3);
+menu.add(item4);
+menu.add(item5);
+$(document).delay(50).queue(function(next) {
+    menu.open();
+    next();
+    $(document).delay(1000).queue(function(next) {
+        menu.close();
+        next();
+    });
+});
+</script>
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-36251023-1']);
+  _gaq.push(['_setDomainName', 'jqueryscript.net']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+</body>
+</html>
