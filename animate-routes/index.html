@@ -3,13 +3,24 @@
 <head>
     <meta charset="utf-8">
     <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+        crossorigin="anonymous"></script>
     <script src="http://d3js.org/d3.v3.min.js"></script>
     <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.45.0/mapbox-gl.js'></script>
     <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.45.0/mapbox-gl.css' rel='stylesheet' />
     <link href='css\styles.css' rel='stylesheet' />
+    <script src="js\widgets.js"></script>
     <script src='js\map.js'></script>
+    <script src='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v2.1.1/mapbox-gl-geocoder.min.js'></script>
+    <link rel='stylesheet' href='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v2.1.1/mapbox-gl-geocoder.css'
+        type='text/css' />
 </head>
 
 <body>
+        <!-- https://getmdl.io/started/index.html -->
+    <div id="widgets">
+        <button id="directionsBtn">icon</button>
+        <div id="directions-panel"></div>
+    </div>
     <div id="map"></div>
 </body>

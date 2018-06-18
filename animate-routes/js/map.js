@@ -14,6 +14,25 @@ map.addControl(new mapboxgl.NavigationControl(
     { showCompass: false }
 ));
 
+// Add auto-complete for "from - to"
+var fromGeocoder = new MapboxGeocoder({
+    // limit results to Egypt
+    country: 'eg',
+    placeholder: 'Choose an origin or click on the Map',
+    accessToken: mapboxgl.accessToken
+});
+
+var toGeocoder = new MapboxGeocoder({
+    country: 'eg',
+    placeholder: 'Enter destination',
+    accessToken: mapboxgl.accessToken
+});
+
+toGeocoder.on('click', function(e){console.log(e)});
+// TODO: append geocoder to DOM https://bl.ocks.org/tristen/a09627f01d3a3bc54139d52a5eb01386
+map.addControl(fromGeocoder);
+map.addControl(toGeocoder);
+
 // Setup our svg layer that we can manipulate with d3
 var container = map.getCanvasContainer();
 var svg = d3.select(container).append("svg");
