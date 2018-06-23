@@ -1,11 +1,22 @@
         <!-- https://getmdl.io/started/index.html -->
         <!-- https://github.com/angular/material2/issues/2612#issuecomment-329401072 -->
         <div id="widgets">
-          <mat-menu class="mat-menu-custom" #appMenu="matMenu" id="widgetsBtn">
-            <div id="directions-panel"></div>
-          </mat-menu>
-          
-          <button mat-icon-button [matMenuTriggerFor]="appMenu">
+          <!-- <mat-menu class="mat-menu-custom" *ngIf="show">
+            
+          </mat-menu> -->
+  
+          <button mat-icon-button (click)="toggleMenu()">
             <mat-icon color="accent">more_vert</mat-icon>
           </button>
+
+          <mat-tab-group [hidden]="hide">
+            <mat-tab label="Directions"> 
+              <div id="directions-panel">
+              <div id="fromDirections"></div> 
+              <div id="toDirections"></div>
+              </div>
+            </mat-tab>
+            <mat-tab label="Travel Time"> Travel Time </mat-tab>
+            <mat-tab label="smth else"> smth else </mat-tab>
+          </mat-tab-group>
       </div>
