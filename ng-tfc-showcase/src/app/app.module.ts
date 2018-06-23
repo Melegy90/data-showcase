@@ -3,14 +3,21 @@ import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
 import { MapComponent } from './components/map/map.component';
+import { WidgetsComponent } from './components/widgets/widgets.component';
+
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import { MaterialModule } from './material.module';
 
 @NgModule({
   declarations: [
     AppComponent,
-    MapComponent
+    MapComponent,
+    WidgetsComponent
   ],
   imports: [
-    BrowserModule
+    BrowserModule,
+    BrowserAnimationsModule,
+    MaterialModule
   ],
   providers: [],
   bootstrap: [AppComponent]

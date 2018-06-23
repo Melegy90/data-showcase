@@ -13,21 +13,4 @@ export class MapService {
     mapboxgl.accessToken = environment.mapbox.accessToken;
    }
 
-  initMap(){
-
-    this.map = new mapboxgl.Map({
-      container: 'map',
-      style: 'mapbox://styles/mapbox/navigation-guidance-night-v2',
-      zoom: 9,
-      center: [31.3, 30.05] // Cairo, Egypt
-    });
-
-
-// Add zoom and rotation controls to the map.
-this.map.addControl(new mapboxgl.NavigationControl(
-  { showCompass: false }
-));
-
-   } // end initMap
-
 }

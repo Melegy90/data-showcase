@@ -1,0 +1,11 @@
+        <!-- https://getmdl.io/started/index.html -->
+        <!-- https://github.com/angular/material2/issues/2612#issuecomment-329401072 -->
+        <div id="widgets">
+          <mat-menu class="mat-menu-custom" #appMenu="matMenu" id="widgetsBtn">
+            <div id="directions-panel"></div>
+          </mat-menu>
+          
+          <button mat-icon-button [matMenuTriggerFor]="appMenu">
+            <mat-icon color="accent">more_vert</mat-icon>
+          </button>
+      </div>
