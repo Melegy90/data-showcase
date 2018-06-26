@@ -9,11 +9,21 @@
             <mat-icon color="accent">more_vert</mat-icon>
           </button>
 
-          <mat-tab-group [hidden]="hide">
-            <mat-tab label="Directions"> 
+          <mat-tab-group [hidden]="hide" [@fadeIn]="menuState">
+            <mat-tab label="Directions" >
               <div id="directions-panel">
-              <div id="fromDirections"></div> 
-              <div id="toDirections"></div>
+              <div id="fromDirections">
+              <mat-form-field>
+              <input matInput placeholder="Enter Origin" disabled>
+            </mat-form-field>
+            <button mat-button><mat-icon color="accent">home</mat-icon></button>
+          </div>
+              <div id="toDirections">
+              <mat-form-field>
+              <input matInput placeholder="Enter Destination" disabled>
+            </mat-form-field>
+            <button mat-button><mat-icon color="accent">home</mat-icon></button>
+              </div>
               </div>
             </mat-tab>
             <mat-tab label="Travel Time"> Travel Time </mat-tab>
