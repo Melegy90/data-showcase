@@ -40,10 +40,11 @@ export class WidgetsComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(){
     // append geocoder to DOM https://bl.ocks.org/tristen/a09627f01d3a3bc54139d52a5eb01386
     // Most probably will drop Mapbox's Geocoder and make our own search inputs
-    // let fromGeocoder= this.mapService.fromGeocoder;
-    // document.getElementById('fromDirections').appendChild(fromGeocoder.onAdd(this.mapService.map));
-    // let toGeocoder = this.mapService.toGeocoder;
-    // document.getElementById('toDirections').appendChild(toGeocoder.onAdd(this.mapService.map));
+    //Map.on and Map.off to register/remove. Also declare the event function by itself and then pass it
+    let fromGeocoder= this.mapService.fromGeocoder;
+    document.getElementById('fromDirections').appendChild(fromGeocoder.onAdd(this.mapService.map));
+    let toGeocoder = this.mapService.toGeocoder;
+    document.getElementById('toDirections').appendChild(toGeocoder.onAdd(this.mapService.map));
 
 
 
